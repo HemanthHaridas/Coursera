@@ -1,5 +1,12 @@
+/* C Code to read in the data from a text file and write out 
+ * the average and maximum value of the array.
+ */
+
 #include<stdio.h>
 #include<stdlib.h>
+
+// average takes the input array and the size of the array as 
+// arguments and calculates the average value of the elements
 
 float average(int array[], int size)
 {
@@ -11,6 +18,10 @@ float average(int array[], int size)
 	float avg	=	sum/size;	
 	return avg;
 }
+
+// maxval takes the input array and size of the array as 
+// arguments and returns the maximum of the elements in
+// the array
 
 int maxval(int array[], int size)
 {
