@@ -1,79 +1,70 @@
-/* Code to sort a LL containing 100 random integers*/
-
-/* The nodes of the LL are constructed using createnode() which 
- * returns a node that contains a randomly generated integer value.
- * It is placed into the LL by insert() which will place it at the
- * head of the list, pushing the rest of the nodes down by one unit.
- * The nodes are then sorted using sort(), which takes two adjacent
- * nodes and swaps their contents, if they are out of order
- */
-
 #include<stdio.h>
 #include<stdlib.h>
 
-struct node
+float average(int array[], int size)
 {
-  int data;
- // struct node *prev;
-  struct node *next;
-};
-
-void swap(struct node* u, struct node* v)
-{
-  int temp  = u->data;
-  u->data = v->data;
-  v->data = temp;
-}
-
-void print(struct node* T)
-{
-  struct node* tr = T;
-  int counter = 0;
-  while(tr!=NULL)
-  {
-    printf("%d\t",tr->data);
-    tr  = tr->next;
-    counter++;
-    if(counter%5==0) printf("\n");
-  }
-  printf("\n");
-}
-
-struct node* createnode(int data)
-{
-  struct node* t = (struct node*)malloc(sizeof(struct node));
-  t->data = data;
-//  t->prev = NULL;
-  t->next = NULL;
-  return t;
-}
-
-struct node* insert(int data, struct node* T)
-{
-  if(T==NULL) return createnode(data);
-  else T->next = insert(data,T->next);
-  return T;
-}
-
-struct node* sort(struct node* T)
+	float sum	=	0.0;
+	for(int i=0; i<size; i++)
 	{
-  struct node * trav  = T;
-  while(trav->next!=NULL)
-  {
-    if(trav->data > trav->next->data)
-    {
-      swap(trav,trav->next);
-      //print(T);
-    }
-    trav  = trav->next;
-  }
+		sum	+=	array[i];
+	}
+	float avg	=	sum/size;	
+	return avg;
 }
 
-int main(void)
+int maxval(int array[], int size)
 {
-  struct node* head = createnode(rand());
-  for(int i=0;i<99;i++) insert(rand(),head);
-  for(int i=0;i<99;i++) sort(head);
-  print(head);
-  return 0;
+	int max		=	array[0];
+	for(int i=1; i<size; i++)
+	{
+		if (array[i] > max)
+		{
+			max	=	array[i];
+		}
+	}
+	return max;
+}
+
+int main(int argc, char *argv[])
+{
+	FILE *inp,*out;
+	
+	if(argc	!=3)
+	{
+		printf("Wrong call to the executable. Command-line argument is <executable> <input> <output>\n");
+		exit(1);
+	}
+	
+	inp		=	fopen(argv[1],"r");
+	out             =       fopen(argv[2],"a");
+
+	int size;	
+	int read;
+	int counter=0;
+	int array[size];
+
+	fscanf(inp,"%d",&size);
+	fseek(inp,1,SEEK_SET);
+
+	while(fscanf(inp,"%d",&read) >0)
+	{
+		array[counter]	=	read;
+		counter++;
+	}
+	float avgnum	=	average(array,size);
+	int max		=	maxval(array,size);
+
+	printf("The size of the array is %d and the numbers read in are ",size);
+	fprintf(out,"The size of the array is %d and the numbers read in are ",size);
+
+	for(int counter=0; counter<size; counter++)
+	{
+		printf("%d\t",array[counter]);
+		fprintf(out,"%d\t",array[counter]);
+
+	}
+
+	printf("\nThe average of the numbers is %f, and the maximum value is %d\n",avgnum,max);
+	fprintf(out,"\nThe average of the numbers is %f, and the maximum value is %d\n",avgnum,max);
+	return 0;
 }
